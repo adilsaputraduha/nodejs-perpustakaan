@@ -91,39 +91,37 @@
                             </div>
                         </form>
                         <hr />
-                        <form action="/loan/temp" method="POST">
-                            <input type="hidden" name="memberCode" id="memberCode" class="memberCode" />
-                            <input type="hidden" name="bookId" id="bookId" class="bookId" />
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label class="form-label">Book code</label>
-                                        <div class="input-group mb-3">
-                                            <input type="text" id="bookCode" name="bookCode" readonly class="form-control bookCode" placeholder="" />
-                                            <button class="btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#searchBook" type="button">Search</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label class="form-label">Book title</label>
-                                        <input type="text" readonly id="bookTitle" name="bookTitle" required class="form-control bookTitle" />
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label class="form-label">Quantity</label>
-                                        <div class="input-group mb-3">
-                                            <input type="text" class="form-control" placeholder="" name="qty" />
-                                            <button class="btn btn-success ms-2" id="buttonAdd" type="submit">Add</button>
-                                        </div>
+                        <input type="hidden" name="memberCode" id="memberCode" class="memberCode" />
+                        <input type="hidden" name="bookId" id="bookId" class="bookId" />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Book code</label>
+                                    <div class="input-group mb-3">
+                                        <input type="text" id="bookCode" name="bookCode" readonly class="form-control bookCode" placeholder="" />
+                                        <button class="btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#searchBook" type="button">Search</button>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Book title</label>
+                                    <input type="text" readonly id="bookTitle" name="bookTitle" required class="form-control bookTitle" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Quantity</label>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder="" name="qty" id="qty" />
+                                        <button class="btn btn-success ms-2" id="buttonAdd" onclick="sendData()">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row justify-content-center mt-4">
+                <div class="row justify-content-center mt-4" id="eek">
                     <div class="col-md-11">
                         <table class="table table-striped table-bordered mb-2" id="table" style="width: 100%">
                             <thead>
@@ -134,7 +132,7 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="isiTabel">
                                 <% temp.forEach(function(data) { %>
                                 <tr>
                                     <td><%= data.kode_buku %></td>
@@ -313,6 +311,85 @@
             });
             document.getElementById('memberCode').value = localStorage.getItem('memberCode');
             document.getElementById('memberName').value = localStorage.getItem('memberName');
+
+            function sendData() {
+                let memberCode = document.getElementById('memberCode').value;
+                let bookId = document.getElementById('bookId').value;
+                let qty = document.getElementById('qty').value;
+                // let urlSubs = 'https://dazelpro.com/subscribe';
+                let urlSubs = 'http://localhost:8080/loan/temp';
+                // let csrfToken = document.getElementById('token').value;
+                // document.getElementById('btnActive').style.display = 'none';
+                // document.getElementById('btnInActive').style.display = 'block';
+                (async () => {
+                    const rawResponse = await fetch(urlSubs, {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            memberCode: memberCode,
+                            bookId: bookId,
+                            qty: qty,
+                        }),
+                    });
+                    const content = await rawResponse.json();
+                    if (content['success']) {
+                        getData();
+                    } else {
+                        alert('There is something wrong!');
+                    }
+                })();
+            }
+            function getData() {
+                let memberCode = document.getElementById('memberCode').value;
+                // let bookId = document.getElementById('bookId').value;
+                // let qty = document.getElementById('qty').value;
+                // let urlSubs = 'https://dazelpro.com/subscribe';
+                let urlSubs = 'http://localhost:8080/loan/coba/' + memberCode;
+                // let csrfToken = document.getElementById('token').value;
+                // document.getElementById('btnActive').style.display = 'none';
+                // document.getElementById('btnInActive').style.display = 'block';
+                (async () => {
+                    const rawResponse = await fetch(urlSubs, {
+                        method: 'GET',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    const content = await rawResponse.json();
+                    if (content['success']) {
+                        console.log(content.data);
+                        let tableTemp = '';
+                        content.data.forEach((d) => {
+                            console.log('asal asalsenyo');
+                            tableTemp += `
+                                <tr>
+                                    <td>${d.kode_buku}</td>
+                                    <td>${d.judul}</td>
+                                    <td>${d.jumlah}</td>
+                                    <td class="text-center">
+                                        <a class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal${d.buku}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                                />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                        document.querySelector('#isiTabel').innerHTML = tableTemp;
+                    } else {
+                        alert('There is something wrong!');
+                    }
+                })();
+            }
         </script>
     </body>
 </html>

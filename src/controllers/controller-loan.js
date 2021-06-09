@@ -60,6 +60,27 @@ module.exports = {
             connection.release();
         });
     },
+    coba(req, res) {
+        let id = req.params.id;
+        pool.getConnection(function (err, connection) {
+            if (err) throw err;
+            connection.query(
+                `
+                SELECT buku, kode_buku, judul, jumlah FROM table_temporary
+                JOIN table_book ON buku=id_buku WHERE kd_anggota = ${id};
+                `,
+                function (error, results) {
+                    if (error) throw error;
+                    res.send({
+                        success: true,
+                        message: 'Berhasil ambil data!',
+                        data: results,
+                    });
+                }
+            );
+            connection.release();
+        });
+    },
     save(req, res) {
         pool.getConnection(function (err, connection) {
             if (err) throw err;
@@ -92,7 +113,10 @@ module.exports = {
                 },
                 function (error, results) {
                     if (error) throw error;
-                    res.redirect('/loan/new');
+                    res.send({
+                        success: true,
+                        message: 'Berhasil ambil data!',
+                    });
                 }
             );
             connection.release();

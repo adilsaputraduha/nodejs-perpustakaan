@@ -104,6 +104,24 @@ ul {
     padding: 10rem 2rem;
 }
 
+.custom-title {
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.card {
+    border-radius: 0;
+    box-shadow: 0.5px 0.5px 4px #05924e;
+}
+
+.card:hover {
+    background: #dadada;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 1px 1px 3px #b6b8b7;
+}
 /* Login */
 .container-login {
     position: absolute;

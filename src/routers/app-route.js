@@ -27,6 +27,7 @@ router.post('/book/delete', verifyUser.isLogin, bookController.delete);
 router.get('/loan', verifyUser.isLogin, loanController.list);
 router.post('/loan/save', verifyUser.isLogin, loanController.save);
 router.post('/loan/temp', verifyUser.isLogin, loanController.temp);
+router.get('/loan/coba/:id', verifyUser.isLogin, loanController.coba);
 // router.post('/loan/update', verifyUser.isLogin, loanController.update);
 router.post('/loan/delete', verifyUser.isLogin, loanController.delete);
 router.get('/loan/new', verifyUser.isLogin, loanController.new);
