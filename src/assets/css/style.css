@@ -1,0 +1,247 @@
+/* 
+Create by @adilsaputraduha
+*/
+
+/*== GOOGLE FONTS ==*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+html,
+body {
+    font-family: 'Poppins';
+    font-size: 15px;
+    line-height: 1.5;
+    box-sizing: border-box;
+    margin: 0;
+    overflow-x: hidden;
+    top: 0;
+    left: 0;
+}
+
+a {
+    text-decoration: none;
+    color: rgba(34, 54, 69, 0.7);
+    font-weight: 500;
+}
+
+a:hover {
+    color: #069c54;
+}
+
+.nav-link {
+    color: rgba(34, 54, 69, 0.7);
+}
+
+.nav-link:hover {
+    color: #069c54;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.navbar {
+    background: white;
+    padding: 3rem 2rem;
+    height: 0rem;
+    min-height: 12vh;
+}
+
+.navbar-toggler {
+    background: #069c54;
+    border: none;
+    padding: 10px 6px;
+    outline: none;
+}
+
+.navbar-toggler span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border: 1px;
+    background: #fff;
+}
+
+.navbar-toggler span + span {
+    margin-top: 4px;
+    width: 18px;
+    margin-left: 4px;
+}
+
+.navbar-nav {
+    background: #fff;
+}
+.navbar-toggler span + span + span {
+    width: 10px;
+    margin-left: 10px;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+    padding: 2rem 1.2rem;
+    position: relative;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link.active {
+    color: #05924e;
+}
+
+.navbar-nav button {
+    padding: 1.2rem 0;
+}
+
+.navbar-nav .btn {
+    background-color: #069c54;
+    color: white;
+    border-radius: 5px;
+    padding: 0.7rem 1.5rem;
+    margin-top: 0.5px;
+}
+
+.navbar-nav .btn:hover {
+    background-color: #048654;
+}
+
+.main {
+    padding: 10rem 2rem;
+}
+
+/* Login */
+.container-login {
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.forms-container-login {
+    position: absolute;
+    margin-top: 10rem;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.sign-in-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0rem 5rem;
+    transition: all 0.2s 0.7s;
+    overflow: hidden;
+}
+
+.title-login {
+    font-size: 1.6rem;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.input-field-login {
+    max-width: 380px;
+    width: 100%;
+    background-color: #f0f0f0;
+    margin: 10px 0;
+    height: 48px;
+    border-radius: 40px;
+    display: grid;
+    grid-template-columns: 15% 85%;
+    padding: 0 0.4rem;
+    position: relative;
+}
+
+.input-field-login i {
+    text-align: center;
+    line-height: 48px;
+    color: #acacac;
+    transition: 0.5s;
+    font-size: 0.8rem;
+}
+
+.input-field-login input {
+    max-width: 85%;
+    background: none;
+    outline: none;
+    border: none;
+    line-height: 1;
+    font-weight: 550;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.input-field-login input::placeholder {
+    color: #aaa;
+    font-weight: 550;
+}
+
+.btnlogin {
+    width: 150px;
+    background-color: #069c54;
+    border: none;
+    outline: none;
+    height: 45px;
+    border-radius: 30px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 10px 0;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.btnlogin:hover {
+    background-color: #048654;
+}
+
+@media (max-width: 870px) {
+    .container-login {
+        top: 0;
+    }
+
+    .forms-container-login {
+        margin-top: 11rem;
+    }
+}
+
+@media (max-width: 570px) {
+    .sign-in-form {
+        padding: 0 1.5rem;
+    }
+
+    .container-login {
+        top: 0;
+    }
+
+    .forms-container-login {
+        margin-top: 12rem;
+    }
+}
+
+/* Alert */
+
+.alert-login {
+    position: absolute;
+    margin-top: 23rem;
+    padding: 15px 30px;
+    border-radius: 5px;
+}
+
+.alert-login .fa-exclamation-circle {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.alert-login .msg {
+    padding: 0 20px;
+    font-size: 15px;
+}
+
+.danger {
+    border: 1px solid #f44336;
+    border-left: 4px solid #f82f21;
+    background-color: #ffffff;
+}

@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>Member Report</title>
+        <div style="padding: 4mm" align="center">
+            <label style="font-size: 25px">Sistem Informasi Perpustakaan</label><br />
+            <label style="font-size: 19px">Komp. Parupuk Raya Blok H.6 Parupuk Tabing, Padang Sumatera Barat</label>
+        </div>
+        <hr />
+        <hr />
+        <div style="padding: 20px 0 10px 0; font-size: 18px" align="center">
+            Laporan Data Anggota
+            <br /><br />
+        </div>
+        <style>
+            .table1 {
+                font-family: sans-serif;
+                color: #444;
+                border-collapse: collapse;
+                width: 100%;
+                border: 1px solid #f2f5f7;
+            }
+
+            .table1 tr th {
+                background: #069c54;
+                color: #fff;
+            }
+
+            .table1,
+            th,
+            td {
+                padding: 8px 20px;
+                text-align: center;
+            }
+
+            .table1 tr:hover {
+                background-color: #f5f5f5;
+            }
+
+            .table1 tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+
+    <body>
+        <table border="1" width="100%" class="table1" align="center">
+            <thead>
+                <tr>
+                    <th>Loan Date</th>
+                    <th>Return Date</th>
+                    <th>Book</th>
+                    <th>Member</th>
+                    <th>User</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% loan.forEach(function(data) { %>
+                <tr>
+                    <td><%= data.t_peminjaman %></td>
+                    <td><%= data.t_kembali %></td>
+                    <td><%= data.judul %></td>
+                    <td><%= data.nama_anggota %></td>
+                    <td><%= data.name%></td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </body>
+</html>
+<script type="text/javascript">
+    window.onload = function () {
+        window.print();
+    };
+</script>

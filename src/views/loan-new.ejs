@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous" />
+        <!-- My CSS -->
+        <link rel="stylesheet" href="/assets/css/style.css" />
+        <!-- datatable CSS -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" />
+        <link href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css" />
+
+        <title>SIMPERPUS : Site Administrator</title>
+    </head>
+    <body>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg header-nav fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="#">Logo</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/member">Member</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/category">Category</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/book">Book</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/loan">Loan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/report">Report</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <a href="/login/logout" class="btn">Logout</a>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Main -->
+        <div class="main">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-11">
+                        <form action="/loan/save" method="POST">
+                            <div class="row mb-5">
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <button class="btn btn-success" id="buttonSave" type="submit">Save all changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Loan date</label>
+                                        <input type="date" id="loanDate" class="form-control" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Member code</label>
+                                        <div class="input-group mb-3">
+                                            <input type="text" id="memberCode" readonly class="form-control memberCode" placeholder="" />
+                                            <button class="btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#searchMember" type="button">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Return date</label>
+                                        <input type="date" id="returnDate" class="form-control" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Member name</label>
+                                        <input type="text" id="memberName" readonly required class="form-control memberName" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <hr />
+                        <form action="/loan/temp" method="POST">
+                            <input type="hidden" name="memberCode" id="memberCode" class="memberCode" />
+                            <input type="hidden" name="bookId" id="bookId" class="bookId" />
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Book code</label>
+                                        <div class="input-group mb-3">
+                                            <input type="text" id="bookCode" name="bookCode" readonly class="form-control bookCode" placeholder="" />
+                                            <button class="btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#searchBook" type="button">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Book title</label>
+                                        <input type="text" readonly id="bookTitle" name="bookTitle" required class="form-control bookTitle" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Quantity</label>
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" placeholder="" name="qty" />
+                                            <button class="btn btn-success ms-2" id="buttonAdd" type="submit">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-4">
+                    <div class="col-md-11">
+                        <table class="table table-striped table-bordered mb-2" id="table" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Title</th>
+                                    <th>Quantity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% temp.forEach(function(data) { %>
+                                <tr>
+                                    <td><%= data.kode_buku %></td>
+                                    <td><%= data.judul %></td>
+                                    <td><%= data.jumlah %></td>
+                                    <td class="text-center">
+                                        <a class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal<%= data.id_buku %>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                                />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <footer class="text-dark p-5">
+            <div class="container text-center text-md-left">
+                <div class="row text-center text-md-left">
+                    <div class="col-md-12">
+                        <div class="row d-flex justify-content-center">
+                            <div>
+                                <p>
+                                    Copyright ©2021 All rights reserved by:
+                                    <a href="#" style="text-decoration: none">
+                                        <strong class="text-success">Adil Sanak</strong>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="modal" tabindex="-1" id="searchMember">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Member data</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-striped table-bordered mb-2" id="table" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% member.forEach(function(data) { %>
+                                <tr>
+                                    <td><%= data.kode_anggota %></td>
+                                    <td><%= data.nama_anggota %></td>
+                                    <td class="text-center">
+                                        <a class="btn btn-success btn-sm mb-1 btn-member" data-id="<%= data.kode_anggota %>" data-nama="<%= data.nama_anggota %>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                                <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
+                                                <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="button" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" tabindex="-1" id="searchBook">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Book data</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-striped table-bordered mb-2" id="table" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Title</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% book.forEach(function(data) { %>
+                                <tr>
+                                    <td><%= data.kode_buku %></td>
+                                    <td><%= data.judul %></td>
+                                    <td class="text-center">
+                                        <a class="btn btn-success btn-sm mb-1 btn-book" data-id="<%= data.id_buku %>" data-kode="<%= data.kode_buku %>" data-nama="<%= data.judul %>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                                <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
+                                                <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="button" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- </form> -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script>
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                // $('#data').DataTable();
+                if (localStorage.getItem('returnDate') == null) {
+                    document.getElementById('loanDate').valueAsDate = new Date();
+                    document.getElementById('returnDate').valueAsDate = new Date();
+                } else {
+                    document.getElementById('loanDate').value = localStorage.getItem('loanDate');
+                    document.getElementById('returnDate').value = localStorage.getItem('returnDate');
+                }
+            });
+
+            $('.btn-member').on('click', function () {
+                const id = $(this).data('id');
+                const nama = $(this).data('nama');
+
+                $('.memberCode').val(id);
+                $('.memberName').val(nama);
+
+                $('#searchMember').modal('hide');
+            });
+            $('.btn-book').on('click', function () {
+                const id = $(this).data('id');
+                const kode = $(this).data('kode');
+                const nama = $(this).data('nama');
+
+                $('.bookId').val(id);
+                $('.bookCode').val(kode);
+                $('.bookTitle').val(nama);
+
+                $('#searchBook').modal('hide');
+            });
+            $('#buttonAdd').on('click', function () {
+                localStorage.setItem('memberCode', document.getElementById('memberCode').value);
+                localStorage.setItem('memberName', document.getElementById('memberName').value);
+                localStorage.setItem('loanDate', document.getElementById('loanDate').value);
+                localStorage.setItem('returnDate', document.getElementById('returnDate').value);
+            });
+            $('#buttonSave').on('click', function () {
+                localStorage.removeItem('memberCode');
+                localStorage.removeItem('memberName');
+                localStorage.removeItem('bookCode');
+                localStorage.removeItem('bookTitle');
+                localStorage.removeItem('loanDate');
+                localStorage.removeItem('returnDate');
+            });
+            document.getElementById('memberCode').value = localStorage.getItem('memberCode');
+            document.getElementById('memberName').value = localStorage.getItem('memberName');
+        </script>
+    </body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="assets/css/style.css" />
+        <title>SIMPERPUS : Site Administrator</title>
+    </head>
+    <body>
+        <div class="container-login">
+            <div class="forms-container-login">
+                <form action="<%= url %>login/auth" method="POST" class="sign-in-form">
+                    <h2 class="title-login">Sign in</h2>
+                    <div class="input-field-login">
+                        <i class="fas fa-user"></i>
+                        <input type="email" name="email" id="email" placeholder="Email" required />
+                    </div>
+                    <div class="input-field-login">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" id="password" placeholder="Password" required />
+                    </div>
+                    <input type="submit" value="Login" class="btnlogin solid" />
+                    <%if (pesanFlash) { %>
+                    <div class="alert-login <%= colorFlash %>">
+                        <span class="fas fa-exclamation-circle"></span>
+                        <span class="msg"><%= pesanFlash %></span>
+                    </div>
+                    <% } %>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
