@@ -30,6 +30,7 @@ router.post('/loan/temp', verifyUser.isLogin, loanController.temp);
 router.get('/loan/data/:id', verifyUser.isLogin, loanController.data);
 // router.post('/loan/update', verifyUser.isLogin, loanController.update);
 router.post('/loan/delete', verifyUser.isLogin, loanController.deleteAll);
+router.post('/loan/deletetemp', verifyUser.isLogin, loanController.deleteTemp);
 router.get('/loan/new/:id', verifyUser.isLogin, loanController.new);
 // Report
 router.get('/report', verifyUser.isLogin, reportController.list);

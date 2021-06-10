@@ -127,7 +127,7 @@
                                         <td><%= data.judul %></td>
                                         <td><%= data.jumlah %></td>
                                         <td class="text-center">
-                                            <button class="btn btn-success btn-sm mb-1" onclick="deleteTemp()">
+                                            <a class="btn btn-success btn-sm mb-1 btn-delete" data-id="<%= data.buku %>">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                                                     <path
@@ -135,7 +135,7 @@
                                                         d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
                                                     />
                                                 </svg>
-                                            </button>
+                                            </a>
                                         </td>
                                     </tr>
                                     <% }); %>
@@ -173,7 +173,7 @@
                 </div>
             </div>
         </footer>
-        <!-- Modal -->
+        <!-- Modal search book -->
         <div class="modal" tabindex="-1" id="searchBook">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -214,7 +214,25 @@
                 </div>
             </div>
         </div>
-        <!-- </form> -->
+        <!-- Modal delete temp -->
+        <div class="modal" tabindex="-1" id="deleteModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete book</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="bookCodeTemp" required class="bookCodeTemp" id="bookCodeTemp" />
+                        <h6>Are you sure you delete this book?</h6>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="button" onclick="deleteTemp()" class="btn btn-success">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script>
         <!-- jQuery -->
@@ -243,6 +261,12 @@
                 $('#searchBook').modal('hide');
             });
 
+            $('.btn-delete').on('click', function () {
+                const id = $(this).data('id');
+                $('.bookCodeTemp').val(id);
+                $('#deleteModal').modal('show');
+            });
+
             $('#buttonAdd').on('click', function () {
                 localStorage.setItem('loanDate', document.getElementById('loanDate').value);
                 localStorage.setItem('returnDate', document.getElementById('returnDate').value);
@@ -261,11 +285,7 @@
                 let memberCode = document.getElementById('memberCode').value;
                 let bookId = document.getElementById('bookId').value;
                 let qty = document.getElementById('qty').value;
-                // let urlSubs = 'https://dazelpro.com/subscribe';
                 let urlSubs = 'http://localhost:8080/loan/temp';
-                // let csrfToken = document.getElementById('token').value;
-                // document.getElementById('btnActive').style.display = 'none';
-                // document.getElementById('btnInActive').style.display = 'block';
                 (async () => {
                     const rawResponse = await fetch(urlSubs, {
                         method: 'POST',
@@ -281,23 +301,19 @@
                     });
                     const content = await rawResponse.json();
                     if (content['success']) {
-                        getData();
+                        window.location.href = 'http://localhost:8080/loan/new/' + memberCode;
                     } else {
                         alert('There is something wrong!');
                     }
                 })();
             }
 
-            // deleteTemp
-            function saveTemp() {
+            // Delete Temp
+            function deleteTemp() {
+                let bookCodeTemp = document.getElementById('bookCodeTemp').value;
                 let memberCode = document.getElementById('memberCode').value;
-                let bookId = document.getElementById('bookId').value;
-                let qty = document.getElementById('qty').value;
-                // let urlSubs = 'https://dazelpro.com/subscribe';
-                let urlSubs = 'http://localhost:8080/loan/temp';
-                // let csrfToken = document.getElementById('token').value;
-                // document.getElementById('btnActive').style.display = 'none';
-                // document.getElementById('btnInActive').style.display = 'block';
+
+                let urlSubs = 'http://localhost:8080/loan/deletetemp';
                 (async () => {
                     const rawResponse = await fetch(urlSubs, {
                         method: 'POST',
@@ -306,14 +322,13 @@
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
+                            bookCodeTemp: bookCodeTemp,
                             memberCode: memberCode,
-                            bookId: bookId,
-                            qty: qty,
                         }),
                     });
                     const content = await rawResponse.json();
                     if (content['success']) {
-                        getData();
+                        window.location.href = 'http://localhost:8080/loan/new/' + memberCode;
                     } else {
                         alert('There is something wrong!');
                     }
@@ -357,13 +372,7 @@
             // Get Data
             function getData() {
                 let memberCode = document.getElementById('memberCode').value;
-                // let bookId = document.getElementById('bookId').value;
-                // let qty = document.getElementById('qty').value;
-                // let urlSubs = 'https://dazelpro.com/subscribe';
                 let urlSubs = 'http://localhost:8080/loan/data/' + memberCode;
-                // let csrfToken = document.getElementById('token').value;
-                // document.getElementById('btnActive').style.display = 'none';
-                // document.getElementById('btnInActive').style.display = 'block';
                 (async () => {
                     const rawResponse = await fetch(urlSubs, {
                         method: 'GET',
@@ -374,17 +383,15 @@
                     });
                     const content = await rawResponse.json();
                     if (content['success']) {
-                        console.log(content.data);
                         let tableTemp = '';
-                        content.data.forEach((d) => {
-                            console.log('asal asalsenyo');
+                        content.data.forEach((data) => {
                             tableTemp += `
                                 <tr>
-                                    <td>${d.kode_buku}</td>
-                                    <td>${d.judul}</td>
-                                    <td>${d.jumlah}</td>
+                                    <td>${data.kode_buku}</td>
+                                    <td>${data.judul}</td>
+                                    <td>${data.jumlah}</td>
                                     <td class="text-center">
-                                        <a class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal${d.buku}">
+                                        <a class="btn btn-success btn-sm mb-1 btn-delete" data-id="${data.buku}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                                                 <path

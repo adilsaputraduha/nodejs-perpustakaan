@@ -143,21 +143,24 @@ module.exports = {
     //         connection.release();
     //     });
     // },
-    // deleteTemp(req, res) {
-    //     pool.getConnection(function (err, connection) {
-    //         if (err) throw err;
-    //         connection.query(
-    //             `DELETE FROM table_peminjaman
-    //             WHERE id_peminjaman = ?`,
-    //             [req.body.id],
-    //             function (error, results) {
-    //                 if (error) throw error;
-    //                 res.redirect('/loan');
-    //             }
-    //         );
-    //         connection.release();
-    //     });
-    // },
+    deleteTemp(req, res) {
+        pool.getConnection(function (err, connection) {
+            if (err) throw err;
+            connection.query(
+                `DELETE FROM table_temporary
+                WHERE kd_anggota = ? AND buku = ?`,
+                [req.body.memberCode, req.body.bookCodeTemp],
+                function (error, results) {
+                    if (error) throw error;
+                    res.send({
+                        success: true,
+                        message: 'Berhasil ambil data!',
+                    });
+                }
+            );
+            connection.release();
+        });
+    },
     deleteAll(req, res) {
         pool.getConnection(function (err, connection) {
             if (err) throw err;
