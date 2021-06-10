@@ -14,9 +14,8 @@ module.exports = {
             if (err) throw err;
             connection.query(
                 `
-                SELECT * FROM table_peminjaman JOIN table_book ON buku_id=id_buku
-                JOIN table_anggota ON kode_anggota=anggota_kode JOIN table_user ON 
-                id_user=user_id;
+                SELECT * FROM table_peminjaman JOIN table_anggota ON kode_anggota=anggota_kode 
+                JOIN table_user ON id_user=user_id;
                 SELECT * FROM table_anggota;
                 `,
                 function (error, results) {
@@ -24,7 +23,7 @@ module.exports = {
                     res.render('loan', {
                         url: URL,
                         moment: moment,
-                        // userName: req.session.username,
+                        username: req.session.username,
                         userId: req.session.id_user,
                         loan: results[0],
                         member: results[1],
@@ -43,6 +42,7 @@ module.exports = {
                 JOIN table_book ON buku=id_buku;
                 SELECT * FROM table_anggota;
                 SELECT * FROM table_book;
+                SELECT faktur FROM table_peminjaman ORDER BY faktur DESC LIMIT 1;
                 `,
                 function (error, results) {
                     if (error) throw error;
@@ -54,6 +54,7 @@ module.exports = {
                         temp: results[0],
                         member: results[1],
                         book: results[2],
+                        faktur: results[3],
                     });
                 }
             );
@@ -85,7 +86,7 @@ module.exports = {
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
-                `INSERT INTO table_book SET ? `,
+                `INSERT INTO table_peminjaman SET ? `,
                 {
                     kode_buku: req.body.code,
                     judul: req.body.title,

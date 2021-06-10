@@ -30,7 +30,7 @@ module.exports = {
                         // Jika data ditemukan, set sesi user tersebut menjadi true
                         req.session.loggedin = true;
                         req.session.userid = results[0].id_user;
-                        // req.session.username = results[0].fullname;
+                        req.session.username = results[0].name;
                         res.redirect('/');
                     } else {
                         // Jika data tidak ditemukan, set library flash dengan pesan error yang diinginkan

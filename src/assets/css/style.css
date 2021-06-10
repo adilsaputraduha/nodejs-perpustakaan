@@ -112,7 +112,7 @@ ul {
 
 .card {
     border-radius: 0;
-    box-shadow: 0.5px 0.5px 4px #05924e;
+    box-shadow: 0.5px 0.5px 0.5px #b6b8b7;
 }
 
 .card:hover {

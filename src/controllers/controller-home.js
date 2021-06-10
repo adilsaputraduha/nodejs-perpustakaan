@@ -23,9 +23,8 @@ module.exports = {
                 function (error, results) {
                     if (error) throw error;
                     res.render('home', {
-                        url: URL,
-                        // userName: req.session.username,
-                        userId: req.session.id_user,
+                        username: req.session.username,
+                        userid: req.session.id_user,
                         category: results[0],
                         book: results[1],
                         member: results[2],

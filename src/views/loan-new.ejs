@@ -56,40 +56,35 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-11">
-                        <form action="/loan/save" method="POST">
-                            <div class="row mb-5">
-                                <div class="col-md-12">
-                                    <div class="text-center">
-                                        <button class="btn btn-success" id="buttonSave" type="submit">Save all changes</button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" name="faktur" id="faktur" class="faktur" value="<%= username %>" />
+                                <% faktur.forEach(function(data) { %>
+                                <input type="hidden" name="faktur" id="faktur" class="faktur" value="<%= data.faktur %>" />
+                                <% }); %>
+                                <div class="mb-3">
+                                    <label class="form-label">Loan date</label>
+                                    <input type="date" id="loanDate" class="form-control" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Member code</label>
+                                    <div class="input-group mb-3">
+                                        <input type="text" id="memberCode" readonly class="form-control memberCode" placeholder="" />
+                                        <button class="btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#searchMember" type="button">Search</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Loan date</label>
-                                        <input type="date" id="loanDate" class="form-control" required />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Member code</label>
-                                        <div class="input-group mb-3">
-                                            <input type="text" id="memberCode" readonly class="form-control memberCode" placeholder="" />
-                                            <button class="btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#searchMember" type="button">Search</button>
-                                        </div>
-                                    </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Return date</label>
+                                    <input type="date" id="returnDate" class="form-control" required />
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Return date</label>
-                                        <input type="date" id="returnDate" class="form-control" required />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Member name</label>
-                                        <input type="text" id="memberName" readonly required class="form-control memberName" />
-                                    </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Member name</label>
+                                    <input type="text" id="memberName" readonly required class="form-control memberName" />
                                 </div>
                             </div>
-                        </form>
+                        </div>
                         <hr />
                         <input type="hidden" name="memberCode" id="memberCode" class="memberCode" />
                         <input type="hidden" name="bookId" id="bookId" class="bookId" />
@@ -123,36 +118,46 @@
                 </div>
                 <div class="row justify-content-center mt-4" id="eek">
                     <div class="col-md-11">
-                        <table class="table table-striped table-bordered mb-2" id="table" style="width: 100%">
-                            <thead>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Title</th>
-                                    <th>Quantity</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="isiTabel">
-                                <% temp.forEach(function(data) { %>
-                                <tr>
-                                    <td><%= data.kode_buku %></td>
-                                    <td><%= data.judul %></td>
-                                    <td><%= data.jumlah %></td>
-                                    <td class="text-center">
-                                        <a class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal<%= data.id_buku %>">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                                                />
-                                            </svg>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <% }); %>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered mb-2" id="table" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Title</th>
+                                        <th>Quantity</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="isiTabel">
+                                    <% temp.forEach(function(data) { %>
+                                    <tr>
+                                        <td><%= data.kode_buku %></td>
+                                        <td><%= data.judul %></td>
+                                        <td><%= data.jumlah %></td>
+                                        <td class="text-center">
+                                            <a class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal<%= data.id_buku %>">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                    <path
+                                                        fill-rule="evenodd"
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                                    />
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <a class="btn btn-secondary" id="buttonCancel" href="/loan">Cancel</a>
+                            <button class="btn btn-success" onclick="saveAll()" id="buttonSave">Save all changes</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -304,8 +309,12 @@
             $('#buttonSave').on('click', function () {
                 localStorage.removeItem('memberCode');
                 localStorage.removeItem('memberName');
-                localStorage.removeItem('bookCode');
-                localStorage.removeItem('bookTitle');
+                localStorage.removeItem('loanDate');
+                localStorage.removeItem('returnDate');
+            });
+            $('#buttonCancel').on('click', function () {
+                localStorage.removeItem('memberCode');
+                localStorage.removeItem('memberName');
                 localStorage.removeItem('loanDate');
                 localStorage.removeItem('returnDate');
             });
@@ -337,6 +346,37 @@
                     const content = await rawResponse.json();
                     if (content['success']) {
                         getData();
+                    } else {
+                        alert('There is something wrong!');
+                    }
+                })();
+            }
+
+            function saveAll() {
+                let faktur = document.getElementById('faktur').value;
+                let loanDate = document.getElementById('loanDate').value;
+                let returnDate = document.getElementById('returnDate').value;
+                let memberCode = document.getElementById('memberCode').value;
+
+                let urlSubs = 'http://localhost:8080/loan/save';
+
+                (async () => {
+                    const rawResponse = await fetch(urlSubs, {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            faktur: faktur,
+                            loanDate: loanDate,
+                            returnDate: returnDate,
+                            memberCode: memberCode,
+                        }),
+                    });
+                    const content = await rawResponse.json();
+                    if (content['success']) {
+                        alert('There is something wrong!');
                     } else {
                         alert('There is something wrong!');
                     }
