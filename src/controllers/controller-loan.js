@@ -24,7 +24,7 @@ module.exports = {
                         url: URL,
                         moment: moment,
                         username: req.session.username,
-                        userId: req.session.id_user,
+                        userid: req.session.userid,
                         loan: results[0],
                         member: results[1],
                     });
@@ -34,13 +34,13 @@ module.exports = {
         });
     },
     new(req, res) {
+        let id = req.params.id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
                 `
                 SELECT buku, kode_buku, judul, jumlah FROM table_temporary
-                JOIN table_book ON buku=id_buku;
-                SELECT * FROM table_anggota;
+                JOIN table_book ON buku=id_buku WHERE kd_anggota = ${id};
                 SELECT * FROM table_book;
                 SELECT faktur FROM table_peminjaman ORDER BY faktur DESC LIMIT 1;
                 `,
@@ -49,19 +49,19 @@ module.exports = {
                     res.render('loan-new', {
                         url: URL,
                         moment: moment,
-                        // userName: req.session.username,
-                        userId: req.session.id_user,
+                        username: req.session.username,
+                        userid: req.session.userid,
                         temp: results[0],
-                        member: results[1],
-                        book: results[2],
-                        faktur: results[3],
+                        book: results[1],
+                        faktur: results[2],
+                        memberCode: id,
                     });
                 }
             );
             connection.release();
         });
     },
-    coba(req, res) {
+    data(req, res) {
         let id = req.params.id;
         pool.getConnection(function (err, connection) {
             if (err) throw err;
@@ -88,15 +88,15 @@ module.exports = {
             connection.query(
                 `INSERT INTO table_peminjaman SET ? `,
                 {
-                    kode_buku: req.body.code,
-                    judul: req.body.title,
-                    pengarang: req.body.author,
-                    penerbit: req.body.publisher,
-                    kategori: req.body.category,
+                    faktur: req.body.faktur,
+                    t_peminjaman: req.body.loanDate,
+                    t_kembali: req.body.returnDate,
+                    anggota_kode: req.body.memberCode,
+                    user_id: req.body.userid,
                 },
                 function (error, results) {
                     if (error) throw error;
-                    res.redirect('/book');
+                    res.send();
                 }
             );
             connection.release();
@@ -143,7 +143,22 @@ module.exports = {
     //         connection.release();
     //     });
     // },
-    delete(req, res) {
+    // deleteTemp(req, res) {
+    //     pool.getConnection(function (err, connection) {
+    //         if (err) throw err;
+    //         connection.query(
+    //             `DELETE FROM table_peminjaman
+    //             WHERE id_peminjaman = ?`,
+    //             [req.body.id],
+    //             function (error, results) {
+    //                 if (error) throw error;
+    //                 res.redirect('/loan');
+    //             }
+    //         );
+    //         connection.release();
+    //     });
+    // },
+    deleteAll(req, res) {
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(

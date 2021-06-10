@@ -27,10 +27,10 @@ router.post('/book/delete', verifyUser.isLogin, bookController.delete);
 router.get('/loan', verifyUser.isLogin, loanController.list);
 router.post('/loan/save', verifyUser.isLogin, loanController.save);
 router.post('/loan/temp', verifyUser.isLogin, loanController.temp);
-router.get('/loan/coba/:id', verifyUser.isLogin, loanController.coba);
+router.get('/loan/data/:id', verifyUser.isLogin, loanController.data);
 // router.post('/loan/update', verifyUser.isLogin, loanController.update);
-router.post('/loan/delete', verifyUser.isLogin, loanController.delete);
-router.get('/loan/new', verifyUser.isLogin, loanController.new);
+router.post('/loan/delete', verifyUser.isLogin, loanController.deleteAll);
+router.get('/loan/new/:id', verifyUser.isLogin, loanController.new);
 // Report
 router.get('/report', verifyUser.isLogin, reportController.list);
 router.get('/report/member-report', verifyUser.isLogin, reportController.member);
