@@ -5,6 +5,7 @@ const category = require('./controller-category');
 const book = require('./controller-book');
 const loan = require('./controller-loan');
 const report = require('./controller-report');
+const logout = require('./controller-logout');
 
 module.exports = {
     login,
@@ -14,4 +15,5 @@ module.exports = {
     book,
     loan,
     report,
+    logout,
 };

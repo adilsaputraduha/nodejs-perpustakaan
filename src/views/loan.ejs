@@ -45,7 +45,7 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
-                        <a href="/login/logout" class="btn">Logout</a>
+                        <a href="/logout/logout" class="btn">Logout</a>
                     </ul>
                 </div>
             </div>
@@ -173,7 +173,8 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <input type="hidden" name="id" required value="<%= data.id_peminjaman%>" />
+                            <input type="hidden" name="id" required value="<%= data.id_peminjaman %>" />
+                            <input type="hidden" name="faktur" required value="<%= data.faktur %>" />
                             <h6>Are you sure you delete this data?</h6>
                         </div>
                         <div class="modal-footer">

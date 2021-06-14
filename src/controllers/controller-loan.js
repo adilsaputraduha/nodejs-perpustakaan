@@ -92,6 +92,7 @@ module.exports = {
                 WHERE faktur = ${req.body.faktur} AND kd_anggota = ${req.body.memberCode};
                 INSERT INTO table_peminjaman (faktur, t_peminjaman, t_kembali, anggota_kode, user_id)
                 VALUES ('${req.body.faktur}','${req.body.loanDate}','${req.body.returnDate}','${req.body.memberCode}','${req.body.userid}');
+                DELETE FROM table_temporary WHERE faktur = ${req.body.faktur} AND kd_anggota = ${req.body.memberCode};
                 `,
                 function (error, results) {
                     if (error) throw error;
@@ -168,9 +169,12 @@ module.exports = {
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
-                `DELETE FROM table_peminjaman
-                WHERE id_peminjaman = ?`,
-                [req.body.id],
+                `
+                DELETE FROM table_peminjaman
+                WHERE id_peminjaman = ${req.body.id};
+                DELETE FROM table_detailpeminjaman
+                WHERE faktur_detail = ${req.body.faktur};
+                `,
                 function (error, results) {
                     if (error) throw error;
                     res.redirect('/loan');
