@@ -86,17 +86,19 @@ module.exports = {
         pool.getConnection(function (err, connection) {
             if (err) throw err;
             connection.query(
-                `INSERT INTO table_peminjaman SET ? `,
-                {
-                    faktur: req.body.faktur,
-                    t_peminjaman: req.body.loanDate,
-                    t_kembali: req.body.returnDate,
-                    anggota_kode: req.body.memberCode,
-                    user_id: req.body.userid,
-                },
+                `
+                INSERT INTO table_detailpeminjaman 
+                SELECT faktur, buku, jumlah FROM table_temporary 
+                WHERE faktur = ${req.body.faktur} AND kd_anggota = ${req.body.memberCode};
+                INSERT INTO table_peminjaman (faktur, t_peminjaman, t_kembali, anggota_kode, user_id)
+                VALUES ('${req.body.faktur}','${req.body.loanDate}','${req.body.returnDate}','${req.body.memberCode}','${req.body.userid}');
+                `,
                 function (error, results) {
                     if (error) throw error;
-                    res.send();
+                    res.send({
+                        success: true,
+                        message: 'Berhasil ambil data!',
+                    });
                 }
             );
             connection.release();
@@ -108,6 +110,7 @@ module.exports = {
             connection.query(
                 `INSERT INTO table_temporary SET ? `,
                 {
+                    faktur: req.body.faktur,
                     kd_anggota: req.body.memberCode,
                     buku: req.body.bookId,
                     jumlah: req.body.qty,
