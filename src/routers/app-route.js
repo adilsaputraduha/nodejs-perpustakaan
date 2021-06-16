@@ -4,6 +4,7 @@ const memberController = require('../controllers').member;
 const categoryController = require('../controllers').category;
 const bookController = require('../controllers').book;
 const loanController = require('../controllers').loan;
+const returnController = require('../controllers').return;
 const reportController = require('../controllers').report;
 const verifyUser = require('../configs/verify');
 
@@ -36,5 +37,6 @@ router.get('/report', verifyUser.isLogin, reportController.list);
 router.get('/report/member-report', verifyUser.isLogin, reportController.member);
 router.get('/report/book-report', verifyUser.isLogin, reportController.book);
 router.get('/report/loan-report', verifyUser.isLogin, reportController.loan);
+router.get('/report/faktur/:id', verifyUser.isLogin, reportController.faktur);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Loan Report</title>
+        <title>Faktur</title>
         <div style="padding: 4mm" align="center">
             <label style="font-size: 25px">Sistem Informasi Perpustakaan</label><br />
             <label style="font-size: 19px">Komp. Parupuk Raya Blok H.6 Parupuk Tabing, Padang Sumatera Barat</label>
@@ -8,9 +8,10 @@
         <hr />
         <hr />
         <div style="padding: 20px 0 10px 0; font-size: 18px" align="center">
-            Laporan Data Peminjaman
+            Faktur Peminjaman Buku
             <br /><br />
         </div>
+
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
@@ -18,11 +19,17 @@
             body {
                 font-family: 'Poppins';
             }
+
+            .table2 {
+                font-weight: bold;
+            }
+
             .table1 {
                 color: #444;
                 border-collapse: collapse;
                 width: 90%;
                 border: 1px solid #f2f5f7;
+                margin-top: 3rem;
             }
 
             hr {
@@ -43,28 +50,46 @@
             .table1 tr:nth-child(even) {
                 background-color: #f2f2f2;
             }
+
+            .th {
+                text-align: left;
+            }
         </style>
     </head>
 
     <body>
+        <% member.forEach(function(data) { %>
+        <table border="0" width="80%" class="table2" align="center">
+            <tr>
+                <th class="th">Nomor Faktur</th>
+                <th class="th"><%= data.faktur %></th>
+                <th class="th">Nama Anggota</th>
+                <th class="th"><%= data.nama_anggota %></th>
+            </tr>
+            <tr>
+                <th class="th">Tanggal Peminjaman</th>
+                <th class="th"><%= moment(data.t_peminjaman).format( 'YYYY-MM-DD ') %></th>
+                <td class="th">Tanggal Kembali</td>
+                <td class="th"><%= moment(data.t_kembali).format( 'YYYY-MM-DD ') %></td>
+            </tr>
+        </table>
+        <% }); %>
         <table border="1" width="100%" class="table1" align="center">
             <thead>
                 <tr>
-                    <th>Invoice</th>
-                    <th>Loan Date</th>
-                    <th>Return Date</th>
-                    <th>Member</th>
-                    <th>User</th>
+                    <th>Code</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
                 </tr>
             </thead>
             <tbody>
-                <% loan.forEach(function(data) { %>
+                <% faktur.forEach(function(data) { %>
                 <tr>
-                    <td><%= data.faktur %></td>
-                    <td><%= moment(data.t_peminjaman).format( 'YYYY-MM-DD ') %></td>
-                    <td><%= moment(data.t_kembali).format( 'YYYY-MM-DD ') %></td>
-                    <td><%= data.nama_anggota %></td>
-                    <td><%= data.name%></td>
+                    <td><%= data.kode_buku %></td>
+                    <td><%= data.judul %></td>
+                    <td><%= data.nama_kategori %></td>
+                    <td><%= data.jumlah %></td>
                 </tr>
                 <% }); %>
             </tbody>

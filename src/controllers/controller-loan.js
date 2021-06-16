@@ -14,10 +14,14 @@ module.exports = {
             if (err) throw err;
             connection.query(
                 `
-                SELECT * FROM table_peminjaman JOIN table_anggota ON kode_anggota=anggota_kode 
-                JOIN table_user ON id_user=user_id;
+                SELECT id_peminjaman, faktur, t_peminjaman, t_kembali, anggota_kode,
+                nama_anggota, user_id, name,
+                COUNT(faktur_detail) AS faktur FROM table_peminjaman 
+                JOIN table_anggota ON kode_anggota=anggota_kode 
+                JOIN table_user ON id_user=user_id
+                JOIN table_detailpeminjaman ON faktur=faktur_detail
+                GROUP BY faktur_detail;
                 SELECT * FROM table_anggota;
-                SELECT COUNT(id_buku) AS jmlrecord FROM table_book;
                 `,
                 function (error, results) {
                     if (error) throw error;
