@@ -17,6 +17,7 @@ module.exports = {
                 SELECT * FROM table_peminjaman JOIN table_anggota ON kode_anggota=anggota_kode 
                 JOIN table_user ON id_user=user_id;
                 SELECT * FROM table_anggota;
+                SELECT COUNT(id_buku) AS jmlrecord FROM table_book;
                 `,
                 function (error, results) {
                     if (error) throw error;
@@ -55,27 +56,6 @@ module.exports = {
                         book: results[1],
                         faktur: results[2],
                         memberCode: id,
-                    });
-                }
-            );
-            connection.release();
-        });
-    },
-    data(req, res) {
-        let id = req.params.id;
-        pool.getConnection(function (err, connection) {
-            if (err) throw err;
-            connection.query(
-                `
-                SELECT buku, kode_buku, judul, jumlah FROM table_temporary
-                JOIN table_book ON buku=id_buku WHERE kd_anggota = ${id};
-                `,
-                function (error, results) {
-                    if (error) throw error;
-                    res.send({
-                        success: true,
-                        message: 'Berhasil ambil data!',
-                        data: results,
                     });
                 }
             );
@@ -121,6 +101,30 @@ module.exports = {
                     res.send({
                         success: true,
                         message: 'Berhasil ambil data!',
+                    });
+                }
+            );
+            connection.release();
+        });
+    },
+    updateList(req, res) {
+        pool.getConnection(function (err, connection) {
+            if (err) throw err;
+            connection.query(
+                `
+                SELECT * FROM table_peminjaman JOIN table_anggota ON kode_anggota=anggota_kode 
+                JOIN table_user ON id_user=user_id;
+                SELECT * FROM table_anggota;
+                `,
+                function (error, results) {
+                    if (error) throw error;
+                    res.render('loan', {
+                        url: URL,
+                        moment: moment,
+                        username: req.session.username,
+                        userid: req.session.userid,
+                        loan: results[0],
+                        member: results[1],
                     });
                 }
             );
