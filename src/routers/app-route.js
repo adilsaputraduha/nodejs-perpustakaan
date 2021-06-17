@@ -4,7 +4,7 @@ const memberController = require('../controllers').member;
 const categoryController = require('../controllers').category;
 const bookController = require('../controllers').book;
 const loanController = require('../controllers').loan;
-const returnController = require('../controllers').return;
+const userController = require('../controllers').user;
 const reportController = require('../controllers').report;
 const verifyUser = require('../configs/verify');
 
@@ -24,6 +24,9 @@ router.get('/book', verifyUser.isLogin, bookController.list);
 router.post('/book/save', verifyUser.isLogin, bookController.save);
 router.post('/book/update', verifyUser.isLogin, bookController.update);
 router.post('/book/delete', verifyUser.isLogin, bookController.delete);
+// User
+router.get('/user', verifyUser.isLogin, userController.list);
+router.post('/user/delete', verifyUser.isLogin, userController.delete);
 // Loan
 router.get('/loan', verifyUser.isLogin, loanController.list);
 router.post('/loan/save', verifyUser.isLogin, loanController.save);
