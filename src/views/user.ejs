@@ -29,10 +29,10 @@
                             <a class="nav-link" aria-current="page" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/user">User</a>
+                            <a class="nav-link active" href="/user">User</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="/member">Member</a>
+                            <a class="nav-link" href="/member">Member</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/category">Category</a>
@@ -74,7 +74,15 @@
                                     <tr>
                                         <td><%= data.email %></td>
                                         <td><%= data.name %></td>
-                                        <td><%= data.role %></td>
+                                        <td>
+                                            <% if(data.role == 0) { %>
+                                            <span class="badge bg-success">Admin</span>
+                                            <% } else if(data.role == 1){ %>
+                                            <span class="badge bg-success">Super Admin</span>
+                                            <% } else if(data.role == 2){ %>
+                                            <span class="badge bg-success">Kepala Pustaka</span>
+                                            <% } %>
+                                        </td>
                                         <td class="text-center">
                                             <a class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#editModal<%= data.id_user %>">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
